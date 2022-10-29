@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DataFormComponent } from './data-form/data-form.component';
-import { TemplateFormComponent } from './template-form/template-form.component';
 import { TemplateFormModule } from './template-form/template-form.module';
 
 
@@ -13,7 +12,6 @@ import { TemplateFormModule } from './template-form/template-form.module';
   declarations: [
     AppComponent,
     DataFormComponent,
-    TemplateFormComponent
   ],
   imports: [
     BrowserModule,
