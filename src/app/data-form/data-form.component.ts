@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 
 @Component({
@@ -32,6 +27,13 @@ export class DataFormComponent implements OnInit {
       //nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       nome: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
+      cep: [null, Validators.required],
+      numero: [null, Validators.required],
+      complemento: [null],
+      rua: [null, Validators.required],
+      bairro: [null, Validators.required],
+      cidade: [null, Validators.required],
+      estado: [null, Validators.required]
     });
   }
 
@@ -57,18 +59,21 @@ export class DataFormComponent implements OnInit {
     this.formulario.reset();
   }
 
-  verificarValidTouched(campo: any){
-    return !this.formulario.controls[campo].valid && this.formulario.controls[campo].touched;
-   }
+  verificarValidTouched(campo: string) {
+    return (
+      !this.formulario.controls[campo].valid &&
+      this.formulario.controls[campo].touched
+    );
+  }
 
-   verificaEmailInvalido() {
+  verificaEmailInvalido() {
     let campoEmail = this.formulario.controls['email'];
-    if (campoEmail.errors){
+    if (campoEmail.errors) {
       return campoEmail.errors['email'] && campoEmail.touched;
     }
-   }
+  }
 
-  aplicaCssErro(campo: any) {
-    return {'was-validated': this.verificarValidTouched(campo)}
+  aplicaCssErro(campo: string) {
+    return { 'was-validated': this.verificarValidTouched(campo) };
   }
 }
