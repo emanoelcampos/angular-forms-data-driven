@@ -1,5 +1,5 @@
 <form class="row g-3" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-  <div class="form-group">
+  <div class="form-group" [ngClass]="aplicaCssErro('nome')">
     <div class="col-12">
       <label for="nome" class="form-label">Nome</label>
       <input
@@ -8,17 +8,13 @@
         id="nome"
         formControlName="nome"
         placeholder="Digite seu nome"
+        required
       />
-      <!-- <div>
-          {{ nome.className }}
-        </div> -->
-      <div class="invalid-feedback">
-        Nome é obrigatório.
-      </div>
+      <div class="invalid-feedback">Nome é obrigatório.</div>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" [ngClass]="aplicaCssErro('email')">
     <div class="col-12">
       <label for="email" class="form-label">Email</label>
       <input
@@ -27,18 +23,16 @@
         id="email"
         formControlName="email"
         placeholder="Digite seu email"
+        required
       />
       <div class="invalid-feedback">
-        Email inválido
-      </div>
+        {{verificaEmailInvalido()? 'Email invàlido' : 'Email é obrigatório' }}
+    </div>
     </div>
   </div>
 
-  <div class="col-1">
-    <button type="submit" class="btn btn-primary">Enviar</button>
-  </div>
-
-  <div class="col-1">
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary" style="margin-right: 5px;">Enviar</button>
     <button type="button" class="btn btn-secondary" (click)="onReset()">Limpar</button>
   </div>
 
