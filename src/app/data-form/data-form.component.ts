@@ -53,7 +53,8 @@ export class DataFormComponent implements OnInit {
   onSubmit() {
     console.log(this.formulario);
 
-    this.httpClient
+    if (this.formulario.valid) {
+      this.httpClient
       .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
       .pipe(map((res: any) => res))
       .subscribe(
@@ -67,7 +68,13 @@ export class DataFormComponent implements OnInit {
           error: (erro) => alert('An error occurred'),
         }
       );
+    } else {
+      console.log('formulario invalido')
+      this.formulario.markAllAsTouched();
+      this.formulario.markAsDirty();
+    }
   }
+
   onReset() {
     this.formulario.reset();
   }
@@ -75,7 +82,7 @@ export class DataFormComponent implements OnInit {
   verificarValidTouched(campo: string) {
     return (
       !this.formulario.get(campo)!.valid &&
-      this.formulario.get(campo)!.touched
+      (this.formulario.get(campo)!.touched || this.formulario.get(campo)!.dirty)
     );
   }
 
