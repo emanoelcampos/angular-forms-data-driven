@@ -21,19 +21,32 @@ export class DataFormComponent implements OnInit {
     /*this.formulario = new FormGroup({
       nome: new FormControl(null),
       email: new FormControl(null),
+
+      endereco: new FormGroup({
+        cep: new FormControl(null),
+        numero: new FormControl(null),
+        complemento: new FormControl(null),
+        rua: new FormControl(null),
+        bairro: new FormControl(null),
+        cidade: new FormControl(null),
+        estado: new FormControl(null),
+      })
     });*/
 
     this.formulario = this.formBuilder.group({
       //nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       nome: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
-      cep: [null, Validators.required],
-      numero: [null, Validators.required],
-      complemento: [null],
-      rua: [null, Validators.required],
-      bairro: [null, Validators.required],
-      cidade: [null, Validators.required],
-      estado: [null, Validators.required]
+
+      endereco: this.formBuilder.group({
+        cep: [null, Validators.required],
+        numero: [null, Validators.required],
+        complemento: [null],
+        rua: [null, Validators.required],
+        bairro: [null, Validators.required],
+        cidade: [null, Validators.required],
+        estado: [null, Validators.required]
+      })
     });
   }
 
@@ -61,13 +74,13 @@ export class DataFormComponent implements OnInit {
 
   verificarValidTouched(campo: string) {
     return (
-      !this.formulario.controls[campo].valid &&
-      this.formulario.controls[campo].touched
+      !this.formulario.get(campo)!.valid &&
+      this.formulario.get(campo)!.touched
     );
   }
 
   verificaEmailInvalido() {
-    let campoEmail = this.formulario.controls['email'];
+    let campoEmail = this.formulario.get('email')!;
     if (campoEmail.errors) {
       return campoEmail.errors['email'] && campoEmail.touched;
     }
