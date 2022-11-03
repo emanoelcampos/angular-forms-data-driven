@@ -135,7 +135,7 @@
 
   <div class="form-group">
     <div class="row">
-      <div class="col-md-3" [ngClass]="aplicaCssErro('cargo')">
+      <div class="col-md-4" [ngClass]="aplicaCssErro('cargo')">
         <label for="cargo" class="form-label">Cargo</label>
         <select
           type="text"
@@ -150,7 +150,7 @@
         </select>
       </div>
 
-      <div class="col-md-3" [ngClass]="aplicaCssErro('tecnologias')">
+      <div class="col-md-4" [ngClass]="aplicaCssErro('tecnologias')">
         <label for="tecnologias" class="form-label">Tecnologias</label>
         <select
           multiple
@@ -167,6 +167,22 @@
             {{ tecnologia.descricao }}
           </option>
         </select>
+      </div>
+
+      <div class="col-md-4" [ngClass]="aplicaCssErro('newsletter')">
+
+        <label for="newsletter" class="form-check-label">Newsletter</label>
+
+        <div id="newsletter" class="row">
+          <div class="col-sm-3" *ngFor="let opcao of newsletterOp">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" [value]="opcao.valor" formControlName="newsletter"> {{ opcao.descricao }}
+              </label>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

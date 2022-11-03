@@ -21,4 +21,17 @@ export class DropdownService {
   getTecnologias(){
     return this.httpClient.get<Tecnologias[]>('assets/dados/tecnologias.json');
   }
+
+  getNewsletter() {
+    return [
+      {
+        valor: 's',
+        descricao: 'Sim'
+      },
+      {
+        valor: 'n',
+        descricao: 'Não'
+      }
+    ]
+  }
 }
