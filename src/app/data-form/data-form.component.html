@@ -36,20 +36,37 @@
       <div class="row">
         <div class="col-md-3" [ngClass]="aplicaCssErro('endereco.cep')">
           <label for="cep" class="form-label">CEP</label>
-          <input type="text" class="form-control" id="cep" required formControlName="cep"
-          (blur)="consultaCep()"/>
+          <input
+            type="text"
+            class="form-control"
+            id="cep"
+            required
+            formControlName="cep"
+            (blur)="consultaCep()"
+          />
           <div class="invalid-feedback">CEP é obrigatório.</div>
         </div>
 
         <div class="col-md-3" [ngClass]="aplicaCssErro('endereco.numero')">
           <label for="numero" class="form-label">Número</label>
-          <input type="text" class="form-control" id="numero" required formControlName="numero"/>
+          <input
+            type="text"
+            class="form-control"
+            id="numero"
+            required
+            formControlName="numero"
+          />
           <div class="invalid-feedback">Número é obrigatório.</div>
         </div>
 
         <div class="col-md-6">
           <label for="complemento" class="form-label">Complemento</label>
-          <input type="text" class="form-control" id="complemento" formControlName="complemento"/>
+          <input
+            type="text"
+            class="form-control"
+            id="complemento"
+            formControlName="complemento"
+          />
         </div>
       </div>
     </div>
@@ -57,7 +74,13 @@
     <div class="form-group">
       <div class="col-12" [ngClass]="aplicaCssErro('endereco.rua')">
         <label for="rua" class="form-label">Rua</label>
-        <input type="text" class="form-control" id="rua" required formControlName="rua"/>
+        <input
+          type="text"
+          class="form-control"
+          id="rua"
+          required
+          formControlName="rua"
+        />
         <div class="invalid-feedback">Rua é obrigatório.</div>
       </div>
     </div>
@@ -66,20 +89,43 @@
       <div class="row">
         <div class="col-md-5" [ngClass]="aplicaCssErro('endereco.bairro')">
           <label for="bairro" class="form-label">Bairro</label>
-          <input type="text" class="form-control" id="bairro" required formControlName="bairro"/>
+          <input
+            type="text"
+            class="form-control"
+            id="bairro"
+            required
+            formControlName="bairro"
+          />
           <div class="invalid-feedback">Bairro é obrigatório.</div>
         </div>
 
         <div class="col-md-4" [ngClass]="aplicaCssErro('endereco.cidade')">
           <label for="cidade" class="form-label">Cidade</label>
-          <input type="text" class="form-control" id="cidade" required formControlName="cidade"/>
+          <input
+            type="text"
+            class="form-control"
+            id="cidade"
+            required
+            formControlName="cidade"
+          />
           <div class="invalid-feedback">Cidade é obrigatório.</div>
         </div>
 
         <div class="col-md-3" [ngClass]="aplicaCssErro('endereco.estado')">
           <label for="estado" class="form-label">Estado</label>
-          <select type="text" class="form-control form-select" id="estado" required formControlName="estado">
-            <option *ngFor="let estado of estados | async" [value]="estado.sigla">{{ estado.nome }}</option>
+          <select
+            type="text"
+            class="form-control form-select"
+            id="estado"
+            required
+            formControlName="estado"
+          >
+            <option
+              *ngFor="let estado of estados | async"
+              [value]="estado.sigla"
+            >
+              {{ estado.nome }}
+            </option>
           </select>
           <div class="invalid-feedback">Estado é obrigatório.</div>
         </div>
@@ -87,11 +133,31 @@
     </div>
   </ng-container>
 
+  <div class="form-group">
+    <div class="col-md-3" [ngClass]="aplicaCssErro('cargo')">
+      <label for="cargo" class="form-label">Cargo</label>
+      <select
+        type="text"
+        class="form-control form-select"
+        id="cargo"
+        formControlName="cargo"
+        [compareWith]="compararCargos"
+      >
+        <option *ngFor="let cargo of cargos | async" [ngValue]="cargo">
+          {{ cargo.descricao }}
+        </option>
+      </select>
+    </div>
+  </div>
+
   <div class="col-12">
     <button type="submit" class="btn btn-primary" style="margin-right: 5px">
       Enviar
     </button>
-    <button type="button" class="btn btn-secondary" (click)="onReset()">
+    <button type="button"  class="btn btn-info" style="margin-right: 5px" (click)="setarCargo()">
+      Cargo
+    </button>
+    <button type="button" class="btn btn-secondary"  (click)="onReset()">
       Limpar
     </button>
   </div>
