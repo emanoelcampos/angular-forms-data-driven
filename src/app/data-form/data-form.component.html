@@ -78,7 +78,9 @@
 
         <div class="col-md-3" [ngClass]="aplicaCssErro('endereco.estado')">
           <label for="estado" class="form-label">Estado</label>
-          <input type="text" class="form-control" id="estado" required formControlName="estado"/>
+          <select type="text" class="form-control form-select" id="estado" required formControlName="estado">
+            <option *ngFor="let estado of estados | async" [value]="estado.sigla">{{ estado.nome }}</option>
+          </select>
           <div class="invalid-feedback">Estado é obrigatório.</div>
         </div>
       </div>

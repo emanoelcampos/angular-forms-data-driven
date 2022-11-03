@@ -7,12 +7,12 @@
   {
   "id": "2",
   "sigla": "AL",
-  "nome": "AlagoaS"
+  "nome": "Alagoas"
   },
   {
   "id": "3",
   "sigla": "AM",
-  "nome": "AmazonaS"
+  "nome": "Amazonas"
   },
   {
   "id": "4",
@@ -32,17 +32,17 @@
   {
   "id": "7",
   "sigla": "DF",
-  "nome": "DiStrito Federal"
+  "nome": "Distrito Federal"
   },
   {
   "id": "8",
   "sigla": "ES",
-  "nome": "ESpírito Santo"
+  "nome": "Espírito santo"
   },
   {
   "id": "9",
   "sigla": "GO",
-  "nome": "GoiáS"
+  "nome": "Goiás"
   },
   {
   "id": "10",
@@ -52,17 +52,17 @@
   {
   "id": "11",
   "sigla": "MG",
-  "nome": "MinaS GeraiS"
+  "nome": "Minas Gerais"
   },
   {
   "id": "12",
   "sigla": "MS",
-  "nome": "Mato GroSSo do Sul"
+  "nome": "Mato Grosso do sul"
   },
   {
   "id": "13",
   "sigla": "MT",
-  "nome": "Mato GroSSo"
+  "nome": "Mato Grosso"
   },
   {
   "id": "14",
@@ -111,8 +111,8 @@
   },
   {
   "id": "23",
-  "sigla": "RS",
-  "nome": "Rio Grande do Sul"
+  "sigla": "Rs",
+  "nome": "Rio Grande do sul"
   },
   {
   "id": "24",
@@ -132,6 +132,6 @@
   {
   "id": "27",
   "sigla": "TO",
-  "nome": "TocantinS"
+  "nome": "Tocantins"
   }
   ]
