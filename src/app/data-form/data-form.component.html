@@ -134,19 +134,40 @@
   </ng-container>
 
   <div class="form-group">
-    <div class="col-md-3" [ngClass]="aplicaCssErro('cargo')">
-      <label for="cargo" class="form-label">Cargo</label>
-      <select
-        type="text"
-        class="form-control form-select"
-        id="cargo"
-        formControlName="cargo"
-        [compareWith]="compararCargos"
-      >
-        <option *ngFor="let cargo of cargos | async" [ngValue]="cargo">
-          {{ cargo.descricao }}
-        </option>
-      </select>
+    <div class="row">
+      <div class="col-md-3" [ngClass]="aplicaCssErro('cargo')">
+        <label for="cargo" class="form-label">Cargo</label>
+        <select
+          type="text"
+          class="form-control form-select"
+          id="cargo"
+          formControlName="cargo"
+          [compareWith]="compararCargos"
+        >
+          <option *ngFor="let cargo of cargos | async" [ngValue]="cargo">
+            {{ cargo.descricao }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-3" [ngClass]="aplicaCssErro('tecnologias')">
+        <label for="tecnologias" class="form-label">Tecnologias</label>
+        <select
+          multiple
+          type="text"
+          class="form-control form-select"
+          id="tecnologias"
+          formControlName="tecnologias"
+        >
+          <option
+
+            *ngFor="let tecnologia of tecnologias | async"
+            [value]="tecnologia.nome"
+          >
+            {{ tecnologia.descricao }}
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -154,10 +175,19 @@
     <button type="submit" class="btn btn-primary" style="margin-right: 5px">
       Enviar
     </button>
-    <button type="button"  class="btn btn-info" style="margin-right: 5px" (click)="setarCargo()">
+
+    <button
+      type="button"
+      class="btn btn-info"
+      style="margin-right: 5px"
+      (click)="setarCargo()"
+    >
       Cargo
     </button>
-    <button type="button" class="btn btn-secondary"  (click)="onReset()">
+
+    <button type="button" class="btn btn-info" style="margin-right: 5px" (click)="setarTecnologia()">Tecnologias</button>
+
+    <button type="button" class="btn btn-secondary" (click)="onReset()">
       Limpar
     </button>
   </div>

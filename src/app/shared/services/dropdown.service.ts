@@ -1,7 +1,9 @@
-import { EstadoBr } from './../models/estado-br';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { Cargos } from '../models/cargos';
+import { Tecnologias } from '../models/tecnologias';
+import { EstadoBr } from './../models/estado-br';
 
 @Injectable()
 export class DropdownService {
@@ -14,5 +16,9 @@ export class DropdownService {
 
   getCargos() {
     return this.httpClient.get<Cargos[]>('assets/dados/cargos.json');
+  }
+
+  getTecnologias(){
+    return this.httpClient.get<Tecnologias[]>('assets/dados/tecnologias.json');
   }
 }
