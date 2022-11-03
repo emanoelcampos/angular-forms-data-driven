@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 
+import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { EstadoBr } from './../shared/models/estado-br';
 
@@ -11,6 +12,7 @@ import { EstadoBr } from './../shared/models/estado-br';
   templateUrl: './data-form.component.html',
   styleUrls: ['./data-form.component.css'],
 })
+
 export class DataFormComponent implements OnInit {
 
   formulario!: FormGroup;
@@ -19,13 +21,15 @@ export class DataFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClient,
-    private dropDownService: DropdownService
+    private dropDownService: DropdownService,
+    private consultaCepService: ConsultaCepService
   ) {}
 
   ngOnInit(): void {
-
-    this.dropDownService.getEstadosBr()
-    .subscribe(dados => {this.estados = dados; console.log(dados)});
+    this.dropDownService.getEstadosBr().subscribe((dados) => {
+      this.estados = dados;
+      console.log(dados);
+    });
 
     /*this.formulario = new FormGroup({
       nome: new FormControl(null),
@@ -54,8 +58,8 @@ export class DataFormComponent implements OnInit {
         rua: [null, Validators.required],
         bairro: [null, Validators.required],
         cidade: [null, Validators.required],
-        estado: [null, Validators.required]
-      })
+        estado: [null, Validators.required],
+      }),
     });
   }
 
@@ -64,21 +68,21 @@ export class DataFormComponent implements OnInit {
 
     if (this.formulario.valid) {
       this.httpClient
-      .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
-      .pipe(map((res: any) => res))
-      .subscribe(
-        //(dados =>{console.log(dados);
-        //   this.onReset();},
-        // (error: any) => alert('erro'));
-        {
-          next: (dados) => {
-            console.log(dados), this.onReset();
-          },
-          error: (erro) => alert('An error occurred'),
-        }
-      );
+        .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
+        .pipe(map((res: any) => res))
+        .subscribe(
+          //(dados =>{console.log(dados);
+          //   this.onReset();},
+          // (error: any) => alert('erro'));
+          {
+            next: (dados) => {
+              console.log(dados), this.onReset();
+            },
+            error: (erro) => alert('An error occurred'),
+          }
+        );
     } else {
-      console.log('formulario invalido')
+      console.log('formulario invalido');
       this.formulario.markAllAsTouched();
       this.formulario.markAsDirty();
     }
@@ -109,18 +113,10 @@ export class DataFormComponent implements OnInit {
   consultaCep() {
     let cep = this.formulario.get('endereco.cep')?.value;
 
-    cep = cep.replace(/\D/g, ''); //Nova variável "cep" somente com dígitos.
-
-    if (cep != "" || null) { //Verifica se campo cep possui valor informado.
-      var validacep = /^[0-9]{8}$/; //Expressão regular para validar o CEP.
-       if(validacep.test(cep)) { //Valida o formato do CEP.
-
-        this.resetaDadosForm();
-
-        this.httpClient.get(`https://viacep.com.br/ws/${cep}/json/`)
-        .pipe(map((dados: any) => dados))
-        .subscribe(dados => this.populaDadosForm(dados));
-       }
+    if (cep != null && cep !== '') {
+      this.consultaCepService
+        .consultaCep(cep)
+        .subscribe((dados:any) => this.populaDadosForm(dados));
     }
   }
 
@@ -130,8 +126,8 @@ export class DataFormComponent implements OnInit {
         rua: dados.logradouro,
         bairro: dados.bairro,
         cidade: dados.localidade,
-        estado: dados.uf
-      }
+        estado: dados.uf,
+      },
     });
   }
 
@@ -141,8 +137,8 @@ export class DataFormComponent implements OnInit {
         rua: null,
         bairro: null,
         cidade: null,
-        estado: null
-      }
+        estado: null,
+      },
     });
   }
 }
