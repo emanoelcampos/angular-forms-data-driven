@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
 import { Cargos } from '../shared/models/cargos';
@@ -91,7 +91,14 @@ export class DataFormComponent implements OnInit {
   buildFrameworks() {
     const values = this.frameworks.map(v => new FormControl(false));
 
-    return this.formBuilder.array(values);
+    return this.formBuilder.array(values, this.requiredMinCheckbox(1));
+  }
+
+  requiredMinCheckbox(min: number) {
+    return (formArray: AbstractControl)  => {
+      const totalChecked = (<FormArray>formArray).controls.filter(v => v.value).length;
+      return totalChecked >= min ? null : { required: true };
+    }
   }
 
   get control() {
