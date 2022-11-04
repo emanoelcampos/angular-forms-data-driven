@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
 import { Cargos } from '../shared/models/cargos';
@@ -23,6 +23,8 @@ export class DataFormComponent implements OnInit {
   cargos!: Observable<Cargos[]>;
   tecnologias!: Observable<Tecnologias[]>;
   newsletterOp!: any[];
+
+  frameworks = ['Angular', 'Spring', 'Vue', 'React'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,16 +82,36 @@ export class DataFormComponent implements OnInit {
       cargo: [null],
       tecnologias: [null],
       newsletter: ['s'],
-      termos: [false, Validators.requiredTrue]
+      termos: [false, Validators.requiredTrue],
+
+      frameworks: this.buildFrameworks()
     });
+  }
+
+  buildFrameworks() {
+    const values = this.frameworks.map(v => new FormControl(false));
+
+    return this.formBuilder.array(values);
+  }
+
+  get control() {
+    return this.formulario.get('frameworks') as FormArray;
   }
 
   onSubmit() {
     console.log(this.formulario);
 
+    let valueSubmit = Object.assign({}, this.formulario.value);
+
+    valueSubmit = Object.assign(valueSubmit, {
+      frameworks: valueSubmit.frameworks.
+      map((v: any, i:any) => v ? this.frameworks[i] : null).
+      filter((v: any) => v !== null)
+    })
+
     if (this.formulario.valid) {
       this.httpClient
-        .post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
+        .post('https://httpbin.org/post', JSON.stringify(valueSubmit))
         .pipe(map((res: any) => res))
         .subscribe(
           //(dados =>{console.log(dados);
