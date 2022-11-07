@@ -10,7 +10,7 @@
         placeholder="Digite seu nome"
         required
       />
-      <div class="invalid-feedback">Nome é obrigatório.</div>
+      <app-campo-control-erro [mostrarErro]="verificarValidTouched('nome')" msgErro="Nome é obrigatório."></app-campo-control-erro>
     </div>
   </div>
 
