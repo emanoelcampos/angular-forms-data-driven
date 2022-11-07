@@ -1,8 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Observable } from 'rxjs';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { map, Observable, pipe } from 'rxjs';
 
+import { VerificaEmailService } from './services/verifica-email.service';
 import { FormValidations } from '../shared/form-validations';
 import { Cargos } from '../shared/models/cargos';
 import { Tecnologias } from '../shared/models/tecnologias';
@@ -31,11 +38,12 @@ export class DataFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private httpClient: HttpClient,
     private dropDownService: DropdownService,
-    private consultaCepService: ConsultaCepService
+    private consultaCepService: ConsultaCepService,
+    private verificaEmailService: VerificaEmailService
   ) {}
 
-
   ngOnInit(): void {
+    //this.verificaEmailService.verificarEmail('emanoel@email.com').subscribe();
 
     this.estados = this.dropDownService.getEstadosBr();
 
@@ -68,7 +76,7 @@ export class DataFormComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       //nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       nome: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.required, Validators.email], this.validarEmail.bind(this)],
       confirmarEmail: [null, [FormValidations.equalsTo('email')]],
 
       endereco: this.formBuilder.group({
@@ -86,21 +94,26 @@ export class DataFormComponent implements OnInit {
       newsletter: ['s'],
       termos: [false, Validators.requiredTrue],
 
-      frameworks: this.buildFrameworks()
+      frameworks: this.buildFrameworks(),
     });
   }
 
   buildFrameworks() {
-    const values = this.frameworks.map(v => new FormControl(false));
+    const values = this.frameworks.map((v) => new FormControl(false));
 
-    return this.formBuilder.array(values, FormValidations.requiredMinCheckbox(1));
+    return this.formBuilder.array(
+      values,
+      FormValidations.requiredMinCheckbox(1)
+    );
   }
 
   get control() {
     return this.formulario.get('frameworks') as FormArray;
   }
 
-  get cep() { return this.formulario.get('cep'); }
+  get cep() {
+    return this.formulario.get('cep');
+  }
 
   onSubmit() {
     console.log(this.formulario);
@@ -108,10 +121,10 @@ export class DataFormComponent implements OnInit {
     let valueSubmit = Object.assign({}, this.formulario.value);
 
     valueSubmit = Object.assign(valueSubmit, {
-      frameworks: valueSubmit.frameworks.
-      map((v: any, i:any) => v ? this.frameworks[i] : null).
-      filter((v: any) => v !== null)
-    })
+      frameworks: valueSubmit.frameworks
+        .map((v: any, i: any) => (v ? this.frameworks[i] : null))
+        .filter((v: any) => v !== null),
+    });
 
     if (this.formulario.valid) {
       this.httpClient
@@ -163,7 +176,7 @@ export class DataFormComponent implements OnInit {
     if (cep != null && cep !== '') {
       this.consultaCepService
         .consultaCep(cep)
-        .subscribe((dados:any) => this.populaDadosForm(dados));
+        .subscribe((dados: any) => this.populaDadosForm(dados));
     }
   }
 
@@ -195,11 +208,17 @@ export class DataFormComponent implements OnInit {
   }
 
   compararCargos(obj1: Cargos, obj2: Cargos) {
-    return obj1 && obj2 ? (obj1.nome === obj2.nome && obj1.nivel === obj2.nivel) : obj1 === obj2;
+    return obj1 && obj2
+      ? obj1.nome === obj2.nome && obj1.nivel === obj2.nivel
+      : obj1 === obj2;
   }
 
   setarTecnologia() {
     this.formulario.get('tecnologias')?.setValue(['java', 'javascript']);
   }
 
+  validarEmail(formControl: FormControl) {
+    return this.verificaEmailService.verificarEmail(formControl.value)
+      .pipe(map(emailExiste => emailExiste ? { emailInvalido: true} : null));
+  }
 }
