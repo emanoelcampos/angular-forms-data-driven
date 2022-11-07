@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
+import { FormValidations } from '../shared/form-validations';
 import { Cargos } from '../shared/models/cargos';
 import { Tecnologias } from '../shared/models/tecnologias';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
@@ -68,9 +69,10 @@ export class DataFormComponent implements OnInit {
       //nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       nome: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
+      confirmarEmail: [null, [FormValidations.equalsTo('email')]],
 
       endereco: this.formBuilder.group({
-        cep: [null, Validators.required],
+        cep: [null, [Validators.required, FormValidations.cepValidator]],
         numero: [null, Validators.required],
         complemento: [null],
         rua: [null, Validators.required],
@@ -91,19 +93,14 @@ export class DataFormComponent implements OnInit {
   buildFrameworks() {
     const values = this.frameworks.map(v => new FormControl(false));
 
-    return this.formBuilder.array(values, this.requiredMinCheckbox(1));
-  }
-
-  requiredMinCheckbox(min: number) {
-    return (formArray: AbstractControl)  => {
-      const totalChecked = (<FormArray>formArray).controls.filter(v => v.value).length;
-      return totalChecked >= min ? null : { required: true };
-    }
+    return this.formBuilder.array(values, FormValidations.requiredMinCheckbox(1));
   }
 
   get control() {
     return this.formulario.get('frameworks') as FormArray;
   }
+
+  get cep() { return this.formulario.get('cep'); }
 
   onSubmit() {
     console.log(this.formulario);

@@ -31,6 +31,21 @@
     </div>
   </div>
 
+  <div class="form-group" [ngClass]="aplicaCssErro('confirmarEmail')">
+    <div class="col-12">
+      <label for="confirmarEmail" class="form-label">Confirmar Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="confirmarEmail"
+        formControlName="confirmarEmail"
+        placeholder="Confirme seu email"
+        required
+      />
+      <div class="invalid-feedback">Campo deve ser igual.</div>
+    </div>
+  </div>
+
   <ng-container formGroupName="endereco">
     <div class="form-group">
       <div class="row">
