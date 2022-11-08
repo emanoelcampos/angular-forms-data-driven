@@ -9,7 +9,7 @@ export class FormValidations {
     }
   }
 
-  static cepValidator(control: FormControl) {
+  static cepValidator(control: AbstractControl) {
     const cep = control.value;
     if (cep && cep !== '') {
       const validacep = /^[0-9]{8}$/;

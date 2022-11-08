@@ -16,6 +16,7 @@ import { Tecnologias } from '../shared/models/tecnologias';
 import { ConsultaCepService } from '../shared/services/consulta-cep.service';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { EstadoBr } from './../shared/models/estado-br';
+import { ValidarEmailService } from './services/validar-email.service';
 
 @Component({
   selector: 'app-data-form',
@@ -39,7 +40,8 @@ export class DataFormComponent implements OnInit {
     private httpClient: HttpClient,
     private dropDownService: DropdownService,
     private consultaCepService: ConsultaCepService,
-    private verificaEmailService: VerificaEmailService
+    private verificaEmailService: VerificaEmailService,
+    private validarEmailService: ValidarEmailService
   ) {}
 
   ngOnInit(): void {
@@ -76,10 +78,11 @@ export class DataFormComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       //nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       nome: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email], this.validarEmail.bind(this)],
+      email: [null, [Validators.required, Validators.email], this.validarEmailService.validate.bind(this.validarEmailService)],
       confirmarEmail: [null, [FormValidations.equalsTo('email')]],
 
       endereco: this.formBuilder.group({
+        //cep: [null, [Validators.required, Validators.pattern(/^[0-9]{5}-[0-9]{3}$/)]],
         cep: [null, [Validators.required, FormValidations.cepValidator]],
         numero: [null, Validators.required],
         complemento: [null],
@@ -94,12 +97,13 @@ export class DataFormComponent implements OnInit {
       newsletter: ['s'],
       termos: [false, Validators.requiredTrue],
 
-      frameworks: this.buildFrameworks(),
+      frameworks: this.buildFrameworks()
     });
   }
 
+
   buildFrameworks() {
-    const values = this.frameworks.map((v) => new FormControl(false));
+    const values = this.frameworks.map(v => new FormControl(false));
 
     return this.formBuilder.array(
       values,
@@ -107,13 +111,11 @@ export class DataFormComponent implements OnInit {
     );
   }
 
-  get control() {
-    return this.formulario.get('frameworks') as FormArray;
-  }
-
   get cep() {
     return this.formulario.get('cep');
   }
+
+  get email() { return this.formulario.get('email')!; }
 
   onSubmit() {
     console.log(this.formulario);
@@ -159,6 +161,13 @@ export class DataFormComponent implements OnInit {
     );
   }
 
+  verificaRequired(campo: string) {
+    return (
+      this.formulario.get(campo)!.hasError('required') &&
+      (this.formulario.get(campo)!.touched || this.formulario.get(campo)!.dirty)
+    );
+  }
+
   verificaEmailInvalido() {
     let campoEmail = this.formulario.get('email')!;
     if (campoEmail.errors) {
@@ -167,7 +176,10 @@ export class DataFormComponent implements OnInit {
   }
 
   aplicaCssErro(campo: string) {
-    return { 'was-validated': this.verificarValidTouched(campo) };
+    return {
+      'has-error': this.verificarValidTouched(campo),
+      'was-validated': this.verificarValidTouched(campo)
+    };
   }
 
   consultaCep() {
@@ -217,8 +229,12 @@ export class DataFormComponent implements OnInit {
     this.formulario.get('tecnologias')?.setValue(['java', 'javascript']);
   }
 
-  validarEmail(formControl: FormControl) {
-    return this.verificaEmailService.verificarEmail(formControl.value)
-      .pipe(map(emailExiste => emailExiste ? { emailInvalido: true} : null));
+  // validarEmail(formControl: FormControl) {
+  //   return this.verificaEmailService.verificarEmail(formControl.value)
+  //     .pipe(map(emailExiste => emailExiste ? { emailInvalido: true} : null));
+  // }
+
+  getFrameworksControls() {
+    return this.formulario.get('frameworks') ? (<FormArray>this.formulario.get('frameworks')).controls : null;
   }
 }
