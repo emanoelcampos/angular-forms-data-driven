@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { map, Observable, pipe } from 'rxjs';
+import { distinctUntilChanged, EMPTY, empty, map, Observable, pipe, switchMap, tap } from 'rxjs';
 
 import { VerificaEmailService } from './services/verifica-email.service';
 import { FormValidations } from '../shared/form-validations';
@@ -99,6 +99,18 @@ export class DataFormComponent implements OnInit {
 
       frameworks: this.buildFrameworks()
     });
+
+    this.formulario.get('endereco.cep')?.statusChanges
+    .pipe(
+      distinctUntilChanged(),
+      tap(value => console.log('valor do CEP:', value)),
+      switchMap(status => status === 'VALID' ?
+      this.consultaCepService
+      .consultaCep(this.formulario.get('endereco.cep')?.value)
+      : EMPTY
+      )
+    )
+    .subscribe(dados => dados ?  this.populaDadosForm(dados) : {});
   }
 
 
