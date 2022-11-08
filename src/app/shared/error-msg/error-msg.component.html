@@ -1,0 +1,9 @@
+
+  <div *ngIf="errorMessage !=null">
+    <div class="invalid-feedback d-block">
+      {{ errorMessage }}
+    </div>
+    </div>
+
+
+  <!-- para utilizar o invalid-feedback do bootstrap como classe para a mensagem de erro passei na classe o d-block (display block) pois essa classe só funciona sem o d-block caso seja associado com um input de classe is-invalid. Como ela está num template separado do input, se faz necessário "forçar" que a div apareça -->
