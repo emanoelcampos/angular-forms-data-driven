@@ -7,6 +7,8 @@ import { DropdownService } from './services/dropdown.service';
 import { VerificaEmailService } from '../data-form/services/verifica-email.service';
 import { CampoControlErroComponent } from './campo-control-erro/campo-control-erro.component';
 import { ErrorMsgComponent } from './error-msg/error-msg.component';
+import { InputFieldComponent } from './input-field/input-field.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -14,16 +16,19 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
   declarations: [
     FormDebugComponent,
     CampoControlErroComponent,
-    ErrorMsgComponent
+    ErrorMsgComponent,
+    InputFieldComponent
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   exports: [
     FormDebugComponent,
     CampoControlErroComponent,
-    ErrorMsgComponent
+    ErrorMsgComponent,
+    InputFieldComponent
   ],
   providers: [DropdownService, VerificaEmailService]
 })
