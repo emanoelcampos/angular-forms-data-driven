@@ -128,6 +128,25 @@
 
         <div class="col-md-4" [ngClass]="aplicaCssErro('endereco.cidade')">
           <label for="cidade" class="form-label">Cidade</label>
+          <select
+            type="text"
+            class="form-control form-select"
+            id="cidade"
+            required
+            formControlName="cidade"
+          >
+            <option
+              *ngFor="let cidade of cidades"
+              [value]="cidade.nome"
+            >
+              {{ cidade.nome }}
+            </option>
+          </select>
+          <div class="invalid-feedback">Cidade é obrigatório.</div>
+        </div>
+
+        <!-- <div class="col-md-4" [ngClass]="aplicaCssErro('endereco.cidade')">
+          <label for="cidade" class="form-label">Cidade</label>
           <input
             type="text"
             class="form-control"
@@ -136,7 +155,7 @@
             formControlName="cidade"
           />
           <div class="invalid-feedback">Cidade é obrigatório.</div>
-        </div>
+        </div> -->
 
         <div class="col-md-3" [ngClass]="aplicaCssErro('endereco.estado')">
           <label for="estado" class="form-label">Estado</label>
@@ -148,7 +167,7 @@
             formControlName="estado"
           >
             <option
-              *ngFor="let estado of estados | async"
+              *ngFor="let estado of estados"
               [value]="estado.sigla"
             >
               {{ estado.nome }}
